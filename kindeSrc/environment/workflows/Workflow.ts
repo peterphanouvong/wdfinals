@@ -60,7 +60,7 @@ const handler = {
       book: Book;
     }>();
 
-    accessToken.book = await fetchBook("Zen's favorite book ID");
+    accessToken.book = await fetchBook("OL24224314M");
   },
 };
 
