@@ -5,6 +5,26 @@ import {
   WorkflowTrigger,
 } from "@kinde/infrastructure";
 
+interface Book {
+  publishers: string[];
+  description: {
+    type: string;
+    value: string;
+  };
+  isbn_10: string[];
+  pagination: string;
+  covers: number[];
+  lc_classifications: string[];
+  key: string;
+  authors: { key: string }[];
+  ocaid: string;
+  publish_places: string[];
+  contributions: string[];
+  ia_box_id: string[];
+  genres: string[];
+  source_records: string[];
+}
+
 export const workflowSettings: WorkflowSettings = {
   id: "addAccessTokenClaim",
   trigger: WorkflowTrigger.UserTokenGeneration,
@@ -24,42 +44,27 @@ const fetchBook = async (bookId: string) => {
   };
   try {
     const res = await fetch(url, options);
-    return await res.json();
+    return (await res.json()) as Book;
   } catch (error) {
     console.error(error);
     return null;
   }
 };
 
-interface Book {
-  publishers: string[];
-  description: {
-    type: string;
-    value: string;
-  };
-  isbn_10: string[];
-  pagination: string;
-
-  covers: number[];
-  lc_classifications: string[];
-  key: string;
-  authors: { key: string }[];
-  ocaid: string;
-  publish_places: string[];
-  contributions: string[];
-  ia_box_id: string[];
-  genres: string[];
-  source_records: string[];
-}
-
 const handler = {
   async handle(event: onUserTokenGeneratedEvent) {
     const accessToken = accessTokenCustomClaims<{
-      hello: string;
+      hello: {
+        world: string;
+        test: number;
+      };
       ipAddress: string;
       book: Book;
     }>();
-
+    accessToken.hello = {
+      world: "Hello there!",
+      test: 123,
+    };
     accessToken.book = await fetchBook("OL24224314M");
   },
 };
