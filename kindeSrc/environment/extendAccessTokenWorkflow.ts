@@ -13,7 +13,7 @@ export const workflowSettings: WorkflowSettings = {
   },
 };
 
-const handler = {
+export default {
   async handle(event: onUserTokenGeneratedEvent) {
     const accessToken = accessTokenCustomClaims<{
       hello: string;
@@ -24,5 +24,3 @@ const handler = {
     accessToken.ipAddress = event.request.ip;
   },
 };
-
-export default handler;
