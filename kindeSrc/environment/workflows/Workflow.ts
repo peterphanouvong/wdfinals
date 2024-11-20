@@ -15,12 +15,12 @@ export const workflowSettings: WorkflowSettings = {
 
 const fetchBook = async (bookId: string) => {
   const url = "https://openlibrary.org/books/" + bookId + ".json";
-  const headers = new Headers({
-    "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
-  });
+  // const headers = new Headers({
+  //   "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
+  // });
   const options = {
     method: "GET",
-    headers: headers,
+    // headers: headers,
   };
   try {
     const res = await fetch(url, options);
