@@ -5,6 +5,17 @@ import {
   WorkflowTrigger,
 } from "@kinde/infrastructure";
 
+export const workflowSettings: WorkflowSettings = {
+  id: "addAccessTokenClaim",
+  trigger: WorkflowTrigger.UserTokenGeneration,
+  bindings: {
+    "kinde.accessToken": {},
+    "kinde.fetch": {},
+    console: {},
+    url: {},
+  },
+};
+
 interface Book {
   publishers: string[];
   description: {
@@ -13,6 +24,7 @@ interface Book {
   };
   isbn_10: string[];
   pagination: string;
+
   covers: number[];
   lc_classifications: string[];
   key: string;
@@ -25,42 +37,27 @@ interface Book {
   source_records: string[];
 }
 
-export const workflowSettings: WorkflowSettings = {
-  id: "addAccessTokenClaim",
-  trigger: WorkflowTrigger.UserTokenGeneration,
-  bindings: {
-    "kinde.accessToken": {},
-    "kinde.fetch": {},
-  },
-};
-
-const fetchBook = async (bookId: string) => {
-  const url = "https://openlibrary.org/books/" + bookId + ".json";
-  // const headers = new Headers({
-  //   "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
-  // });
-  const options = {
-    method: "GET",
-    // headers: headers,
-  };
-  try {
-    const res = await fetch(url, options);
-    return (await res.json()) as Book;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-
 const handler = {
   async handle(event: onUserTokenGeneratedEvent) {
     const accessToken = accessTokenCustomClaims<{
       hello: string;
       ipAddress: string;
-      book: Book | null;
+      book: Book;
     }>();
 
-    accessToken.book = await fetchBook("OL24224314M");
+    const url = "https://openlibrary.org/books/" + "OL24224314M" + ".json";
+
+    const options = {
+      method: "GET",
+    };
+    try {
+      const res = await fetch(url, options);
+      accessToken.book = await res.json();
+    } catch (error) {
+      console.error(error);
+    }
+
+    // accessToken.book = await fetchBook("Zen's fav");
   },
 };
 
