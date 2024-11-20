@@ -30,30 +30,37 @@ export const workflowSettings: WorkflowSettings = {
   trigger: WorkflowTrigger.UserTokenGeneration,
   bindings: {
     "kinde.accessToken": {},
+    "kinde.fetch": {},
   },
+};
+
+const fetchBook = async (bookId: string) => {
+  const url = "https://openlibrary.org/books/" + bookId + ".json";
+  // const headers = new Headers({
+  //   "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
+  // });
+  const options = {
+    method: "GET",
+    // headers: headers,
+  };
+  try {
+    const res = await fetch(url, options);
+    return (await res.json()) as Book;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 
 const handler = {
   async handle(event: onUserTokenGeneratedEvent) {
     const accessToken = accessTokenCustomClaims<{
-      hello: {
-        world: string;
-        test: number;
-      };
+      hello: string;
       ipAddress: string;
       book: Book | null;
     }>();
-    accessToken.hello = {
-      world: "Hello there!",
-      test: 123,
-    };
-    const url = "https://openlibrary.org/books/" + "OL24224314M" + ".json";
-    const res = await fetch(url, {
-      method: "GET",
-    });
-    const book = await res.json();
-    console.log("book", book);
-    accessToken.book = book;
+
+    accessToken.book = await fetchBook("OL24224314M");
   },
 };
 
