@@ -3,8 +3,9 @@ import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function Home() {
-  const { getOrganization, getUser } = getKindeServerSession();
+  const { getOrganization, getUser, getAccessToken } = getKindeServerSession();
   const user = await getUser();
+  const accessToken = await getAccessToken();
 
   if (!user) {
     return (
@@ -28,6 +29,7 @@ export default async function Home() {
   return (
     <div>
       <pre>{JSON.stringify(org, null, 2)}</pre>
+      <pre>{JSON.stringify(accessToken, null, 2)}</pre>
     </div>
   );
 }
