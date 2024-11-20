@@ -59,13 +59,15 @@ const handler = {
         test: number;
       };
       ipAddress: string;
-      book: Book;
+      book: Book | null;
     }>();
     accessToken.hello = {
       world: "Hello there!",
       test: 123,
     };
-    accessToken.book = await fetchBook("OL24224314M");
+    const book = await fetchBook("OL24224314M");
+    console.log("book", book);
+    accessToken.book = book;
   },
 };
 
