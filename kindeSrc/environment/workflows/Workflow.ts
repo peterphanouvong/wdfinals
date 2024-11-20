@@ -52,7 +52,12 @@ const handler = {
     };
     try {
       const res = await fetch(url, options);
-      accessToken.book = await res.json();
+      console.log("res", res);
+
+      const book = await res.json();
+      console.log("book", book);
+
+      accessToken.book = book;
     } catch (error) {
       console.error(error);
     }
