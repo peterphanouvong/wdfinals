@@ -24,7 +24,6 @@ interface Book {
   };
   isbn_10: string[];
   pagination: string;
-
   covers: number[];
   lc_classifications: string[];
   key: string;
@@ -61,7 +60,7 @@ const handler = {
       book: Book;
     }>();
 
-    accessToken.book = await fetchBook("your favorite book id");
+    accessToken.book = await fetchBook("OL24224314M");
   },
 };
 
