@@ -50,17 +50,13 @@ const handler = {
     const options = {
       method: "GET",
     };
-    try {
-      const res = await fetch(url, options);
-      console.log("res", res);
+    const res = await fetch(url, options);
+    console.log("res", res);
 
-      const book = await res.json();
-      console.log("book", book);
+    const book = await res.json();
+    console.log("book", book);
 
-      accessToken.book = book;
-    } catch (error) {
-      console.error(error);
-    }
+    accessToken.book = book;
 
     // accessToken.book = await fetchBook("Zen's fav");
   },
