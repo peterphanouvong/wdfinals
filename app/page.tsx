@@ -1,15 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  getKindeServerSession,
+  LoginLink,
+} from "@kinde-oss/kinde-auth-nextjs/server";
 import Image from "next/image";
 
 export default async function Home() {
   const { getOrganization, getUser, getAccessToken } = getKindeServerSession();
   const user = await getUser();
   const accessToken = await getAccessToken();
-  // const book = await fetchBook("OL24224314M");
-
-  // console.log("book", book);
 
   if (!user) {
     return (
@@ -24,9 +23,12 @@ export default async function Home() {
   if (org?.orgCode === "org_15a14124dae") {
     return (
       <div>
-        John left some clues about the book in his user profile on Kinde Include
-        the book details when returning data from the workflow to have it render
-        correctlyThe workflow is connected to your log in
+        <p>Check this Library's properties on Kinde.</p>
+        <p>There is information on Kai's favourite book...</p>
+        <p>
+          ...add the book data to the accessToken via <code>Workflow.ts</code>{" "}
+          for a hint on where to find the key.
+        </p>
         <Image
           src={`https://covers.openlibrary.org/b/id/${accessToken.book.data.covers[0]}-L.jpg`}
           width={200}
@@ -44,7 +46,8 @@ export default async function Home() {
   return (
     <div>
       <pre>{JSON.stringify(org, null, 2)}</pre>
-      <pre>{JSON.stringify(accessToken, null, 2)}</pre>
+      <p>Nothing here...</p>
+      {/* <pre>{JSON.stringify(accessToken, null, 2)}</pre> */}
     </div>
   );
 }

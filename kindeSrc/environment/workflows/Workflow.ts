@@ -1,9 +1,8 @@
 import {
   accessTokenCustomClaims,
-  onUserTokenGeneratedEvent,
+  fetch,
   WorkflowSettings,
   WorkflowTrigger,
-  fetch,
 } from "@kinde/infrastructure";
 
 export const workflowSettings: WorkflowSettings = {
@@ -55,14 +54,14 @@ const fetchBook = async (id: string) => {
 };
 
 const handler = {
-  async handle(event: onUserTokenGeneratedEvent) {
+  async handle() {
     const accessToken = accessTokenCustomClaims<{
       hello: string;
       ipAddress: string;
       book: Book;
     }>();
 
-    accessToken.book = await fetchBook("OL24224314M");
+    accessToken.book = await fetchBook("your favorite book id");
   },
 };
 
