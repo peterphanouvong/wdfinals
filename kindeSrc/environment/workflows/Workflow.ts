@@ -49,20 +49,14 @@ const handler = {
 
     const url = "https://openlibrary.org/books/" + "OL24224314M" + ".json";
 
-    const res = await fetch(url, {
+    const book = await fetch(url, {
       method: "GET",
       headers: {
         "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
       },
     });
-    console.log("res", res);
-
-    const book = await res.json();
-    console.log("book", book);
 
     accessToken.book = book;
-
-    // accessToken.book = await fetchBook("Zen's fav");
   },
 };
 
