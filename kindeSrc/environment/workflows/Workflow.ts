@@ -3,7 +3,9 @@ import {
   onUserTokenGeneratedEvent,
   WorkflowSettings,
   WorkflowTrigger,
+  fetch,
 } from "@kinde/infrastructure";
+import { headers } from "next/headers";
 
 export const workflowSettings: WorkflowSettings = {
   id: "addAccessTokenClaim",
@@ -47,10 +49,12 @@ const handler = {
 
     const url = "https://openlibrary.org/books/" + "OL24224314M" + ".json";
 
-    const options = {
+    const res = await fetch(url, {
       method: "GET",
-    };
-    const res = await fetch(url, options);
+      headers: {
+        "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
+      },
+    });
     console.log("res", res);
 
     const book = await res.json();
