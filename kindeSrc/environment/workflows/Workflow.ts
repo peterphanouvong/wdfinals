@@ -5,7 +5,6 @@ import {
   WorkflowTrigger,
   fetch,
 } from "@kinde/infrastructure";
-import { headers } from "next/headers";
 
 export const workflowSettings: WorkflowSettings = {
   id: "addAccessTokenClaim",
@@ -39,6 +38,22 @@ interface Book {
   source_records: string[];
 }
 
+const fetchBook = async (id: string) => {
+  const url = "https://openlibrary.org/books/" + id + ".json";
+  try {
+    const book = await fetch(url, {
+      method: "GET",
+      headers: {
+        "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
+      },
+    });
+
+    return book;
+  } catch {
+    return null;
+  }
+};
+
 const handler = {
   async handle(event: onUserTokenGeneratedEvent) {
     const accessToken = accessTokenCustomClaims<{
@@ -47,16 +62,7 @@ const handler = {
       book: Book;
     }>();
 
-    const url = "https://openlibrary.org/books/" + "OL24224314M" + ".json";
-
-    const book = await fetch(url, {
-      method: "GET",
-      headers: {
-        "User-Agent": "WebDirectionsComp/1.0 (peter@kinde.com)",
-      },
-    });
-
-    accessToken.book = book;
+    accessToken.book = await fetchBook("OL24224314M");
   },
 };
 
