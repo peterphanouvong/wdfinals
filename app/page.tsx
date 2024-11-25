@@ -1,53 +1,60 @@
 import { Button } from "@/components/ui/button";
-import {
-  getKindeServerSession,
-  LoginLink,
-} from "@kinde-oss/kinde-auth-nextjs/server";
-import Image from "next/image";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { RefreshButton } from "./refresh-button";
 
 export default async function Home() {
-  const { getOrganization, getUser, getAccessToken } = getKindeServerSession();
-  const user = await getUser();
-  const accessToken = await getAccessToken();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser<{ bookCode: string; bookName: string }>();
 
-  if (!user) {
-    return (
-      <div>
-        <Button asChild>
-          <LoginLink>Start</LoginLink>
-        </Button>
-      </div>
-    );
-  }
-  const org = await getOrganization();
-  if (org?.orgCode === "org_15a14124dae") {
-    return (
-      <div>
-        <p>Check this Library's properties on Kinde.</p>
-        <p>There is information on Kai's favourite book...</p>
-        <p>
-          ...add the book data to the accessToken via <code>Workflow.ts</code>{" "}
-          for a hint on where to find the key.
-        </p>
-        <Image
-          src={`https://covers.openlibrary.org/b/id/${accessToken.book.data.covers[0]}-L.jpg`}
-          width={200}
-          height={300}
-          alt={""}
-        />
-        <pre>ISBN10: {accessToken.book.data.isbn_10[0]}</pre>
-        <p>
-          The location of the book is hidden in the ISBN10 Seat row: ISBN[3]
-          left: ISBN10[7]Go to the seat to find the key!!!
-        </p>
-      </div>
-    );
-  }
   return (
-    <div>
-      <pre>{JSON.stringify(org, null, 2)}</pre>
-      <p>Nothing here...</p>
-      {/* <pre>{JSON.stringify(accessToken, null, 2)}</pre> */}
+    <div className="p-8">
+      <div className="rounded-lg bg-slate-50 border-slate-200 border font-mono p-4 text-sm">
+        <div className="mb-4">
+          <p className="font-semibold">Your tasks</p>
+          <ol className="list-decimal pl-12">
+            <li>Set up the LoginLink and LogoutLink for authentication</li>
+            <li>Login to retrieve the book code below</li>
+            <li>Use the book code in `api/webhook/route.ts`</li>
+            <li>Logout and login again to trigger the webhook</li>
+            <li>The book name is the final password</li>
+            <li>
+              Enter the final password to obtain the coordinates of the
+              skateboard
+            </li>
+          </ol>
+        </div>
+        <div className="mb-4">
+          <p className="font-semibold">Your clues</p>
+          <ol className="list-decimal pl-12">
+            <li>Email: peter+1@kinde.com</li>
+            <li>Password: Password123!</li>
+          </ol>
+        </div>
+      </div>
+
+      <div className="flex gap-2 my-4">
+        {/* TODO: LoginLink */}
+        <Button asChild>
+          <a href="#">Login</a>
+        </Button>
+        {/* TODO: LogoutLink */}
+        <Button variant={"outline"} asChild>
+          <a href="#">Logout</a>
+        </Button>
+        <RefreshButton />
+      </div>
+
+      <pre className="rounded-lg p-4 text-sm border">
+        {user
+          ? JSON.stringify(user, null, 2)
+          : "Not logged in. Log in to trigger the webhook."}
+      </pre>
+
+      {/* <div className="space-y-1 flex flex-col mt-8">
+        <label className="font-medium">The final password</label>
+        <input type="password" className="border p-2 rounded-lg outline-none" />
+      </div>
+      <Button className="mt-4">Submit</Button> */}
     </div>
   );
 }
