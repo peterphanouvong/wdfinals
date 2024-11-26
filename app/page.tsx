@@ -7,54 +7,66 @@ export default async function Home() {
   const user = await getUser<{ bookCode: string; bookName: string }>();
 
   return (
-    <div className="p-8">
-      <div className="rounded-lg bg-slate-50 border-slate-200 border font-mono p-4 text-sm">
-        <div className="mb-4">
-          <p className="font-semibold">Your tasks</p>
-          <ol className="list-decimal pl-12">
-            <li>Set up the LoginLink and LogoutLink for authentication</li>
-            <li>Login to retrieve the book code below</li>
-            <li>Use the book code in `api/webhook/route.ts`</li>
-            <li>Logout and login again to trigger the webhook</li>
-            <li>The book name is the final password</li>
-            <li>
-              Enter the final password to obtain the coordinates of the
-              skateboard
-            </li>
-          </ol>
-        </div>
-        <div className="mb-4">
-          <p className="font-semibold">Your clues</p>
-          <ol className="list-decimal pl-12">
+    <div className="p-8 py-40">
+      <div className="text-center pb-24">
+        <h2 className="text-5xl font-medium mb-8 tracking-tight">
+          Kinde
+          <br />
+          Speedrun
+        </h2>
+        <h1 className="text-[180px] leading-[175px] tracking-tight font-medium">
+          The finals
+        </h1>
+        <p className="text-2xl max-w-lg mx-auto mt-6">
+          Your goal is to uncover the final password and claim the prize
+        </p>
+      </div>
+      <hr className="mb-24" />
+
+      <h2 className="tracking-tight text-7xl mb-12 font-medium text-center">
+        Tasks
+      </h2>
+      <div className="mx-auto max-w-3xl text-xl">
+        <ol className="list-decimal pl-12 font-medium space-y-2">
+          <li>Set up the LoginLink and LogoutLink for authentication</li>
+          <li>Sign in to retrieve the book code below</li>
+          <ul className="list-disc pl-6 space-y-2">
             <li>Email: peter+1@kinde.com</li>
             <li>Password: Password123!</li>
-          </ol>
+          </ul>
+          <li>Use the book code in `api/webhook/route.ts`</li>
+          <li>Sign out and sign in again to trigger the webhook</li>
+          <li>Click the refresh button to update the response</li>
+          <li>The book name is the final password</li>
+          <li>
+            Enter the final password to obtain the co-ordinates of the
+            skateboard
+          </li>
+        </ol>
+
+        <hr className="my-16" />
+
+        <div className="mb-8 gap-12 flex">
+          <div className="flex gap-4">
+            {/* TODO: LoginLink */}
+            <Button asChild>
+              <a href="#">Sign in</a>
+            </Button>
+            {/* TODO: LogoutLink */}
+            <Button variant={"secondary"} asChild>
+              <a href="#">Sign out</a>
+            </Button>
+          </div>
+          <RefreshButton />
         </div>
-      </div>
 
-      <div className="flex gap-2 my-4">
-        {/* TODO: LoginLink */}
-        <Button asChild>
-          <a href="#">Login</a>
-        </Button>
-        {/* TODO: LogoutLink */}
-        <Button variant={"outline"} asChild>
-          <a href="#">Logout</a>
-        </Button>
-        <RefreshButton />
+        <h3 className="font-medium text-base mb-2">Response</h3>
+        <pre className="rounded-lg p-4 text-sm border font-sans">
+          {user
+            ? JSON.stringify(user, null, 2)
+            : "Not logged in. Log in to trigger the webhook."}
+        </pre>
       </div>
-
-      <pre className="rounded-lg p-4 text-sm border">
-        {user
-          ? JSON.stringify(user, null, 2)
-          : "Not logged in. Log in to trigger the webhook."}
-      </pre>
-
-      {/* <div className="space-y-1 flex flex-col mt-8">
-        <label className="font-medium">The final password</label>
-        <input type="password" className="border p-2 rounded-lg outline-none" />
-      </div>
-      <Button className="mt-4">Submit</Button> */}
     </div>
   );
 }
