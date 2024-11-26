@@ -61,11 +61,13 @@ export default async function Home() {
         </div>
 
         <h3 className="font-medium text-base mb-2">Response</h3>
-        <pre className="rounded-lg p-4 text-sm border font-sans">
-          {user
-            ? JSON.stringify(user, null, 2)
-            : "Not logged in. Log in to trigger the webhook."}
-        </pre>
+        <div className="rounded-lg p-4 text-sm border overflow-auto">
+          {user ? (
+            <pre>{JSON.stringify(user, null, 2)}</pre>
+          ) : (
+            "Not logged in. Log in to trigger the webhook."
+          )}
+        </div>
       </div>
     </div>
   );
